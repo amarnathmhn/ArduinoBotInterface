@@ -42,7 +42,7 @@ private:
 	Environment* pEnv;  // pointer to environment
 	bool withTrail;
 	std::list<Point> trail;
-	Brain* brain;  // brain of this agent -> implemented as SNN in Brain.cpp
+	Brain* pBrain;  // brain of this agent -> implemented as SNN in Brain.cpp
 public:
 
 	Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );

@@ -14,9 +14,11 @@
 using namespace std;
 
 int main() {
-	int display_width = 800;
+
+	int display_width = 1200;
 	int display_height = 600;
 
+	float FPS = 10;
 	// declare allegro display pointer
 	ALLEGRO_DISPLAY *display = NULL;
 
@@ -39,9 +41,42 @@ int main() {
 		return 0;
 	}
 
+	// register keyboard to the queue
+	// install keyboard
+	al_install_keyboard();
+
+	// init font
+	al_init_font_addon();
+	al_init_ttf_addon();
+
+	// declare event queue
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+
+	// declare timer
+	ALLEGRO_TIMER *timer = NULL;
+
+	// create event_queue
+	event_queue = al_create_event_queue();
+	if (!event_queue) {
+		fprintf(stderr, "failed to create event_queue!\n");
+		al_destroy_display(display);
+		return -1;
+	}
+
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+	timer = al_create_timer(1.0 / FPS);
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_start_timer(timer);
+	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	//******************************************* CREATE ENVIRONMENT ********************************************
-	Environment* pEnv = new Environment(display_width, display_height);
+	int woffset = 200;
+	int hoffset = 0;
+	int envWidth = display_width - woffset; // leave room for monitoring
+	int envHeight = display_height - hoffset;
+	Environment* pEnv = new Environment(envWidth, envHeight, display_width,
+			display_height);
 	if (!pEnv) {
 		printf("Error:main(): Environment Couldn't be Created\n");
 		return -1;
@@ -53,10 +88,14 @@ int main() {
 	pEnv->setObstacle(obs1, 50, 50);
 	pEnv->setObstacle(obs2, 50, 50);
 
+	pEnv->setGrid();
+
 	pEnv->draw();
 
+	al_flip_display();
+	al_clear_to_color(al_map_rgb(0, 0, 0));
 	//******************************************* CREATE AGENT **************************************************
-	Point initPos(50, display_height - 50);
+	Point initPos(woffset + 50, hoffset + envHeight - 50);
 	float initAngle = 0.0;
 	int nSens = 5;
 	ALLEGRO_BITMAP* img = al_load_bitmap("boe.png");
@@ -77,35 +116,6 @@ int main() {
 	pAgent->setTrail(true);
 
 	//******************************************* CREATE ALLEGRO EVENTS *****************************************
-	float FPS = 10;
-
-	// declare event queue
-	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-
-	// declare timer
-	ALLEGRO_TIMER *timer = NULL;
-
-	// create event_queue
-	event_queue = al_create_event_queue();
-	if (!event_queue) {
-		fprintf(stderr, "failed to create event_queue!\n");
-		al_destroy_display(display);
-		return -1;
-	}
-	// register keyboard to the queue
-	// install keyboard
-	al_install_keyboard();
-
-	// init font
-	al_init_font_addon();
-	al_init_ttf_addon();
-
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-
-	timer = al_create_timer(1.0 / FPS);
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	al_start_timer(timer);
-	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	float prob = 0.0;
 	// to keep game loop running
@@ -164,6 +174,8 @@ int main() {
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	}
+
+	// destroy all dynamically created objects
 
 	if (pEnv)
 		delete pEnv;

@@ -82,7 +82,7 @@ void UltrasonicSensor::calcDistance(Environment* pEnv, Point position, float ang
 		if (brkObsLoop)
 			break;
 		else {
-			if (x <= 0 || x >= pEnv->width || y <= 0 || y >= pEnv->height) {
+			if (x <= (pEnv->dispWidth - pEnv->width) || x >= pEnv->width || y <= (pEnv->dispHeight - pEnv->height) || y >= pEnv->height) {
 				al_draw_line(/*float x1*/position.x, /*float y1*/position.y,
 				/*float x2*/x, /*float y2*/y,
 				/*ALLEGRO_COLOR color*/al_map_rgb(255, 0, 0),

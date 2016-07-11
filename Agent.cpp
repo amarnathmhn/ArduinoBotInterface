@@ -45,6 +45,12 @@ Agent::Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image) {
 
 	this->pEnv = NULL;
 
+	this->pBrain = new Brain();
+
+	if(pBrain){
+		pBrain->createHippocampal(100, 3);
+	}
+
 }
 
 Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
@@ -82,11 +88,17 @@ Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
 	this->withTrail = false;
 	this->pEnv = NULL;
 
+	this->pBrain = new Brain();
+
+	if(pBrain){
+		pBrain->createHippocampal(100, 3);
+	}
 }
 
 Agent::~Agent() {
 	// TODO Auto-generated destructor stub
 	delete[] US;
+	if(pBrain) delete pBrain;
 }
 
 void Agent::draw() {
@@ -244,8 +256,8 @@ bool Agent::hasCollided() {
 	return false;
 }
 
-void Agent:: setBrain(Brain* brain){
-	if(brain){
-		this->brain = brain;
+void Agent:: setBrain(Brain* br){
+	if(br){
+		this->brain = br;
 	}
 }

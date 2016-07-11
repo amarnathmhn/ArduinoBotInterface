@@ -16,7 +16,7 @@
 #include <allegro5/allegro_image.h>
 
 #include<math.h>
-
+#include<cstdlib>
 enum MotorRotationType {
 	FORWARD, BACKWARD, NONE
 };
