@@ -41,6 +41,8 @@ Agent::Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image) {
 		US[i].setDSens(dSens);
 	}
 
+	this->withTrail = false;
+
 }
 
 Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
@@ -75,6 +77,7 @@ Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
 		US[i].setIndex(i - nsens / 2);
 		US[i].setDSens(dSens);
 	}
+	this->withTrail = false;
 
 }
 
@@ -89,6 +92,18 @@ void Agent::draw() {
 		/*float dx*/currentPosition.x, /*float dy*/currentPosition.y,
 		/*float radian angle*/currentAngle,
 		/*int flags*/0);
+	}
+
+	if(withTrail) {
+		std::list<Point>::iterator itr = trail.begin();
+		// draw the starting point a little different
+		al_draw_filled_circle( itr->x, itr->y, 5.0, al_map_rgb(255, 0, 0) );
+		itr++;
+		while( itr != trail.end() ){
+
+			al_draw_filled_circle( itr->x, itr->y, 2.0, al_map_rgb(255, 255, 0) );
+			itr++;
+		}
 	}
 
 }
@@ -106,15 +121,33 @@ void Agent::setEnv(Environment* pEnv) {
 
 void Agent::updatePosition() {
 
+	if(withTrail) this->trail.push_back(currentPosition);
+
+	int dir = rand()%3;
+	switch(dir){
+
+	case 0: this->moveForward(0.1);
+			break;
+	case 1: this->turnLeft(0.1);
+			break;
+	case 2: this->turnRight(0.1);
+			break;
+	}
 	//this->moveForward(0.1);
 
-	this->turnRight(0.01);
+	//this->turnRight(0.01);
 	// update Sensor values while drawing them
 	if (pEnv) {
 		for (int i = 0; i < numOfSensors; i++)
 			this->US[i].calcDistance(pEnv, currentPosition, currentAngle);
 	}
+	if( hasCollided() ){
+		this->currentPosition.copy(this->initialPosition);
+		this->currentAngle = 0.0;
+	}
 	draw();
+
+
 
 }
 
@@ -190,4 +223,16 @@ void Agent::turnRight(float runTime) {
 	currentPosition.x += dx;
 	currentPosition.y -= dy;
 	currentAngle += dTheta;
+}
+void Agent::setTrail(bool tr){
+	this->withTrail = tr;
+}
+bool Agent::hasCollided(){
+	for(int i=0; i < this->numOfSensors; i++){
+		if( US[i].getDistance() < 5){
+			return true;
+		}
+	}
+
+	return false;
 }

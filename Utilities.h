@@ -52,6 +52,10 @@ public:
 		this->x = x;
 		this->y = y;
 	}
+	void copy(Point& P){
+		this->x = P.x;
+		this->y = P.y;
+	}
 
 };
 

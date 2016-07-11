@@ -69,9 +69,10 @@ int main() {
 	}
 	pAgent->setEnv(pEnv);
 	pAgent->draw();
+	pAgent->setTrail(true);
 
 	//******************************************* CREATE ALLEGRO EVENTS *****************************************
-	float FPS = 1;
+	float FPS = 10;
 
 	// declare event queue
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;

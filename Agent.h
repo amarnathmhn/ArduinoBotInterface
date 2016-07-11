@@ -39,6 +39,8 @@ private:
 	Wheel WL;  // left wheel
 	Wheel WR;  // right wheel
 	Environment* pEnv;  // pointer to environment
+	bool withTrail;
+	std::list<Point> trail;
 public:
 
 	Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );
@@ -52,6 +54,8 @@ public:
 	void moveForward(float runTime);
 	void turnLeft(float runTime);
 	void turnRight(float runTime);
+	void setTrail(bool tr);
+	bool hasCollided();
 };
 
 #endif /* AGENT_H_ */
