@@ -11,6 +11,7 @@
 #include "Utilities.h"
 #include "Environment.h"
 
+
 class UltrasonicSensor {
 
 private:
@@ -40,7 +41,7 @@ public:
 
 	void calcDistance();   // For the actual Sensor
 
-	void calcDistance(Environment* pEnv); // For the Simulated Sensor
+	void calcDistance(Environment* pEnv, Point position, float angle); // For the Simulated Sensor
 
 	float getDistance();
 

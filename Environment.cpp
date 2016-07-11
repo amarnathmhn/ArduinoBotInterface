@@ -37,7 +37,7 @@ void Environment::draw(){
 	// Draw if Allegro Display exists
 	std::list<Obstacle>::iterator itr = obstacles.begin();
 	while(itr != obstacles.end()){
-		printf("obstacle draw called\n");
+		//printf("obstacle draw called\n");
 		al_draw_filled_rectangle(itr->tlc.x, itr->tlc.y, itr->tlc.x + itr->width, itr->tlc.y + itr->height, al_map_rgb(255, 255, 255));
 		itr++;
 	}

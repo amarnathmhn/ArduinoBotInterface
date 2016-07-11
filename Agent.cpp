@@ -65,7 +65,7 @@ Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
 
 	this->numOfSensors = nsens;
 
-	this->US = new UltrasonicSensor [nsens];
+	this->US = new UltrasonicSensor[nsens];
 
 	this->dSens = 3.14 / (nsens - 1);
 
@@ -83,11 +83,111 @@ Agent::~Agent() {
 	delete[] US;
 }
 
-void Agent::draw(){
-	if(image){
+void Agent::draw() {
+	if (image) {
 		al_draw_rotated_bitmap(image, width / 2, height / 2,
-			/*float dx*/currentPosition.x, /*float dy*/currentPosition.y,
-			/*float radian angle*/currentAngle,
-			/*int flags*/0);
+		/*float dx*/currentPosition.x, /*float dy*/currentPosition.y,
+		/*float radian angle*/currentAngle,
+		/*int flags*/0);
 	}
+
+}
+
+Point Agent::getCurrentPosition() {
+	return this->currentPosition;
+}
+float Agent::getCurrentAngle() {
+	return this->currentAngle;
+}
+
+void Agent::setEnv(Environment* pEnv) {
+	this->pEnv = pEnv;
+}
+
+void Agent::updatePosition() {
+
+	//this->moveForward(0.1);
+
+	this->turnRight(0.01);
+	// update Sensor values while drawing them
+	if (pEnv) {
+		for (int i = 0; i < numOfSensors; i++)
+			this->US[i].calcDistance(pEnv, currentPosition, currentAngle);
+	}
+	draw();
+
+}
+
+void Agent::moveForward(float runTime) {
+
+	this->ML.setRunTime(runTime);
+	this->ML.setRPM(1200);
+	this->ML.setRotationType(FORWARD);
+	this->ML.rotateWheel(&WL);
+
+	this->MR.setRunTime(runTime);
+	this->MR.setRPM(1200);
+	this->MR.setRotationType(FORWARD);
+	this->MR.rotateWheel(&WR);
+	// calculate wheel travel distance here
+	// noOfRotations*circumference
+	float DLW = (this->WL.getAngleRotated()) * (this->WL.getDiameter()) / 2; // left wheel distance
+	float DRW = (this->WR.getAngleRotated()) * (this->WR.getDiameter()) / 2; // right wheel distance
+
+	float dTheta = (DLW - DRW) / this->width;  // rotation about C.O.M
+
+	float dx = 0.5 * (DLW + DRW) * sin(currentAngle);
+	float dy = 0.5 * (DLW + DRW) * cos(currentAngle);
+
+	currentPosition.x += dx;
+	currentPosition.y -= dy;
+	currentAngle += dTheta;
+}
+void Agent::turnLeft(float runTime) {
+	this->ML.setRunTime(runTime);
+	this->ML.setRPM(1200);
+	this->ML.setRotationType(BACKWARD);
+	this->ML.rotateWheel(&WL);
+
+	this->MR.setRunTime(runTime);
+	this->MR.setRPM(1200);
+	this->MR.setRotationType(FORWARD);
+	this->MR.rotateWheel(&WR);
+	// calculate wheel travel distance here
+	// noOfRotations*circumference
+	float DLW = (this->WL.getAngleRotated()) * (this->WL.getDiameter()) / 2; // left wheel distance
+	float DRW = (this->WR.getAngleRotated()) * (this->WR.getDiameter()) / 2; // right wheel distance
+
+	float dTheta = (DLW - DRW) / this->width;  // rotation about C.O.M
+
+	float dx = 0.5 * (DLW + DRW) * sin(currentAngle);
+	float dy = 0.5 * (DLW + DRW) * cos(currentAngle);
+
+	currentPosition.x += dx;
+	currentPosition.y -= dy;
+	currentAngle += dTheta;
+}
+void Agent::turnRight(float runTime) {
+	this->ML.setRunTime(runTime);
+	this->ML.setRPM(1200);
+	this->ML.setRotationType(FORWARD);
+	this->ML.rotateWheel(&WL);
+
+	this->MR.setRunTime(runTime);
+	this->MR.setRPM(1200);
+	this->MR.setRotationType(BACKWARD);
+	this->MR.rotateWheel(&WR);
+	// calculate wheel travel distance here
+	// noOfRotations*circumference
+	float DLW = (this->WL.getAngleRotated()) * (this->WL.getDiameter()) / 2; // left wheel distance
+	float DRW = (this->WR.getAngleRotated()) * (this->WR.getDiameter()) / 2; // right wheel distance
+
+	float dTheta = (DLW - DRW) / this->width;  // rotation about C.O.M
+
+	float dx = 0.5 * (DLW + DRW) * sin(currentAngle);
+	float dy = 0.5 * (DLW + DRW) * cos(currentAngle);
+
+	currentPosition.x += dx;
+	currentPosition.y -= dy;
+	currentAngle += dTheta;
 }

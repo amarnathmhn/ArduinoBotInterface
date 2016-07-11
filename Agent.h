@@ -16,6 +16,7 @@
 
 #include "UltrasonicSensor.h"
 #include "Motor.h"
+#include "Environment.h"
 
 class Agent {
 
@@ -33,14 +34,24 @@ private:
 	float dSens;          // Angle between sensors
 	UltrasonicSensor* US;
 	ALLEGRO_BITMAP* image;
-	Motor ML;
-	Motor MR;
+	Motor ML;  // left motor
+	Motor MR;  // right motor
+	Wheel WL;  // left wheel
+	Wheel WR;  // right wheel
+	Environment* pEnv;  // pointer to environment
 public:
 
 	Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );
 	Agent(Point iP, float iA, int nsens, float width, float height);
 	virtual ~Agent();
+	Point getCurrentPosition();
+	float getCurrentAngle();
 	void draw();
+	void setEnv(Environment* pEnv);
+	void updatePosition();
+	void moveForward(float runTime);
+	void turnLeft(float runTime);
+	void turnRight(float runTime);
 };
 
 #endif /* AGENT_H_ */

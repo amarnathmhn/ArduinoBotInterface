@@ -32,3 +32,10 @@ int Wheel::getSlotsPassed(){
 	return int(nSlots*dAngle/(2*3.14));
 }
 
+float Wheel:: getAngleRotated(){
+	return this->dAngle;
+}
+
+float Wheel:: getDiameter(){
+	return this->diameter;
+}

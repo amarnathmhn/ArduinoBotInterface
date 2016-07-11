@@ -44,6 +44,13 @@ float Motor:: getRPM(){
 }
 
 void Motor:: rotateWheel(Wheel* wheel){
-	wheel -> rotate(RPM, runTime);
+	if(this->motorRotationType == FORWARD){
+		wheel -> rotate(RPM, runTime);
+	}
+	else if(this->motorRotationType == BACKWARD){
+		wheel -> rotate(-RPM, runTime);
+	}else{
+		wheel -> rotate(0.0, runTime);
+	}
 }
 

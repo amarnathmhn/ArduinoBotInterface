@@ -13,7 +13,7 @@
 
 class Environment {
 
-private:
+public:
 	int width;
 	int height;
 	std::list<Obstacle> obstacles;

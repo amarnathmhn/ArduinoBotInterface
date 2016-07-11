@@ -13,9 +13,6 @@ int main() {
 	int display_width = 800;
 	int display_height = 600;
 
-	// Frame per second to update display
-	int FPS = 60;
-
 	// declare allegro display pointer
 	ALLEGRO_DISPLAY *display = NULL;
 
@@ -38,10 +35,12 @@ int main() {
 		return 0;
 	}
 
-	al_flip_display();
-	al_clear_to_color(al_map_rgb(0, 0, 0));
 	//******************************************* CREATE ENVIRONMENT ********************************************
 	Environment* pEnv = new Environment(display_width, display_height);
+	if (!pEnv) {
+		printf("Error:main(): Environment Couldn't be Created\n");
+		return -1;
+	}
 
 	Point obs1(0, 0);
 	Point obs2(display_width / 2, display_height / 2);
@@ -52,32 +51,121 @@ int main() {
 	pEnv->draw();
 
 	//******************************************* CREATE AGENT **************************************************
-	Point initPos(50, display_height-50);
+	Point initPos(50, display_height - 50);
 	float initAngle = 0.0;
 	int nSens = 5;
 	ALLEGRO_BITMAP* img = al_load_bitmap("boe.png");
-	if(!img){
+
+	if (!img) {
 		printf("Error: main(): img could not be loaded\n");
 		return -1;
 	}
 
 	Agent* pAgent = new Agent(initPos, initAngle, nSens, img);
+
+	if (!pAgent) {
+		printf("Error:main(): Agent Couldn't be Created\n");
+		return -1;
+	}
+	pAgent->setEnv(pEnv);
 	pAgent->draw();
 
+	//******************************************* CREATE ALLEGRO EVENTS *****************************************
+	float FPS = 1;
 
+	// declare event queue
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 
+	// declare timer
+	ALLEGRO_TIMER *timer = NULL;
 
+	// create event_queue
+	event_queue = al_create_event_queue();
+	if (!event_queue) {
+		fprintf(stderr, "failed to create event_queue!\n");
+		al_destroy_display(display);
+		return -1;
+	}
+	// register keyboard to the queue
+	// install keyboard
+	al_install_keyboard();
 
+	// init font
+	al_init_font_addon();
+	al_init_ttf_addon();
+
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+	timer = al_create_timer(1.0 / FPS);
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_start_timer(timer);
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+
+	float prob = 0.0;
+	// to keep game loop running
+	bool done = false;
 	al_flip_display();
 	al_clear_to_color(al_map_rgb(0, 0, 0));
+	//********************************************* GAME LOOP *******************************************
+	while (!done) {
+		ALLEGRO_EVENT ev;
 
-	al_rest(3.0);
+		bool pos_update = false;
 
-	cout << "hello world" << endl;
+		al_wait_for_event(event_queue, &ev);
 
-	if(pEnv) delete pEnv;
-	if(pAgent)delete pAgent;
-	if(img) al_destroy_bitmap(img);
-	if(display) al_destroy_display(display);
+		if (ev.type == ALLEGRO_EVENT_TIMER) {
+			pos_update = true;
+		}
+		if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_ESCAPE:
+				done = true;
+				break;
+			case ALLEGRO_KEY_UP:
+				prob += 10;
+				if (prob > 100)
+					prob = 100;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				prob -= 10;
+				if (prob < 0)
+					prob = 0;
+				break;
+			case ALLEGRO_KEY_PAD_PLUS:
+				if (FPS + 10 <= 60)
+					FPS += 10;
+				al_set_timer_speed(timer, 1.0 / FPS);
+				break;
+			case ALLEGRO_KEY_PAD_MINUS:
+				if (FPS - 10 >= 10)
+					FPS -= 10;
+				al_set_timer_speed(timer, 1.0 / FPS);
+				break;
+			}
+		}
+
+		if (pos_update) {
+			// Add Controller Here
+			pEnv->draw();
+			pAgent->updatePosition();
+			//#include "controller_collisionCheck.h"
+
+		}
+
+		al_flip_display();
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	}
+
+	if (pEnv)
+		delete pEnv;
+	if (pAgent)
+		delete pAgent;
+	if (img)
+		al_destroy_bitmap(img);
+	if (display)
+		al_destroy_display(display);
 
 }

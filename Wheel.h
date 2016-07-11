@@ -21,6 +21,8 @@ public:
 	virtual ~Wheel();
 	void rotate(float RPM, float runTime);
 	int getSlotsPassed();
+	float getAngleRotated();
+	float getDiameter();
 };
 
 #endif /* WHEEL_H_ */
