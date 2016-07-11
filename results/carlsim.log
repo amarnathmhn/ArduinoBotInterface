@@ -1,0 +1,10 @@
+[INFO carlsim/kernel/src/snn_cpu.cpp:2029] Created results directory "results/".
+[INFO carlsim/kernel/src/snn_cpu.cpp:2051] *********************************************************************************
+[INFO carlsim/kernel/src/snn_cpu.cpp:2053] ********************      Welcome to CARLsim 3.0      ***************************
+[INFO carlsim/kernel/src/snn_cpu.cpp:2054] *********************************************************************************
+
+[INFO carlsim/kernel/src/snn_cpu.cpp:2056] ***************************** Configuring Network ********************************
+[INFO carlsim/kernel/src/snn_cpu.cpp:2058] Starting CARLsim simulation "dummy" in USER mode
+[INFO carlsim/kernel/src/snn_cpu.cpp:2059] Random number seed: 1468197005
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2065] Current local time and date: Sun Jul 10 19:30:05 2016
+
