@@ -43,6 +43,8 @@ Agent::Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image) {
 
 	this->withTrail = false;
 
+	this->pEnv = NULL;
+
 }
 
 Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
@@ -78,6 +80,7 @@ Agent::Agent(Point iP, float iA, int nsens, float width, float height) {
 		US[i].setDSens(dSens);
 	}
 	this->withTrail = false;
+	this->pEnv = NULL;
 
 }
 
@@ -94,14 +97,14 @@ void Agent::draw() {
 		/*int flags*/0);
 	}
 
-	if(withTrail) {
+	if (withTrail) {
 		std::list<Point>::iterator itr = trail.begin();
 		// draw the starting point a little different
-		al_draw_filled_circle( itr->x, itr->y, 5.0, al_map_rgb(255, 0, 0) );
+		al_draw_filled_circle(itr->x, itr->y, 5.0, al_map_rgb(255, 0, 0));
 		itr++;
-		while( itr != trail.end() ){
+		while (itr != trail.end()) {
 
-			al_draw_filled_circle( itr->x, itr->y, 2.0, al_map_rgb(255, 255, 0) );
+			al_draw_filled_circle(itr->x, itr->y, 2.0, al_map_rgb(255, 255, 0));
 			itr++;
 		}
 	}
@@ -121,17 +124,23 @@ void Agent::setEnv(Environment* pEnv) {
 
 void Agent::updatePosition() {
 
-	if(withTrail) this->trail.push_back(currentPosition);
+	if (withTrail)
+		this->trail.push_back(currentPosition);
 
-	int dir = rand()%3;
-	switch(dir){
+	float dt = 0.01;
 
-	case 0: this->moveForward(0.1);
-			break;
-	case 1: this->turnLeft(0.1);
-			break;
-	case 2: this->turnRight(0.1);
-			break;
+	int dir = rand() % 3;
+	switch (dir) {
+
+	case 0:
+		this->moveForward(dt);
+		break;
+	case 1:
+		this->turnLeft(dt);
+		break;
+	case 2:
+		this->turnRight(dt);
+		break;
 	}
 	//this->moveForward(0.1);
 
@@ -141,20 +150,18 @@ void Agent::updatePosition() {
 		for (int i = 0; i < numOfSensors; i++)
 			this->US[i].calcDistance(pEnv, currentPosition, currentAngle);
 	}
-	if( hasCollided() ){
+	if (hasCollided()) {
 		this->currentPosition.copy(this->initialPosition);
 		this->currentAngle = 0.0;
 	}
 	draw();
-
-
 
 }
 
 void Agent::moveForward(float runTime) {
 
 	this->ML.setRunTime(runTime);
-	this->ML.setRPM(1200);
+	this->ML.setRPM(200);
 	this->ML.setRotationType(FORWARD);
 	this->ML.rotateWheel(&WL);
 
@@ -178,7 +185,7 @@ void Agent::moveForward(float runTime) {
 }
 void Agent::turnLeft(float runTime) {
 	this->ML.setRunTime(runTime);
-	this->ML.setRPM(1200);
+	this->ML.setRPM(200);
 	this->ML.setRotationType(BACKWARD);
 	this->ML.rotateWheel(&WL);
 
@@ -202,7 +209,7 @@ void Agent::turnLeft(float runTime) {
 }
 void Agent::turnRight(float runTime) {
 	this->ML.setRunTime(runTime);
-	this->ML.setRPM(1200);
+	this->ML.setRPM(200);
 	this->ML.setRotationType(FORWARD);
 	this->ML.rotateWheel(&WL);
 
@@ -224,15 +231,21 @@ void Agent::turnRight(float runTime) {
 	currentPosition.y -= dy;
 	currentAngle += dTheta;
 }
-void Agent::setTrail(bool tr){
+void Agent::setTrail(bool tr) {
 	this->withTrail = tr;
 }
-bool Agent::hasCollided(){
-	for(int i=0; i < this->numOfSensors; i++){
-		if( US[i].getDistance() < 5){
+bool Agent::hasCollided() {
+	for (int i = 0; i < this->numOfSensors; i++) {
+		if (US[i].getDistance() < 5) {
 			return true;
 		}
 	}
 
 	return false;
+}
+
+void Agent:: setBrain(Brain* brain){
+	if(brain){
+		this->brain = brain;
+	}
 }

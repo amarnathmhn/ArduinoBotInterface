@@ -17,6 +17,7 @@
 #include "UltrasonicSensor.h"
 #include "Motor.h"
 #include "Environment.h"
+#include "Brain.h"
 
 class Agent {
 
@@ -41,6 +42,7 @@ private:
 	Environment* pEnv;  // pointer to environment
 	bool withTrail;
 	std::list<Point> trail;
+	Brain* brain;  // brain of this agent -> implemented as SNN in Brain.cpp
 public:
 
 	Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );
@@ -56,6 +58,7 @@ public:
 	void turnRight(float runTime);
 	void setTrail(bool tr);
 	bool hasCollided();
+	void setBrain(Brain* brain);
 };
 
 #endif /* AGENT_H_ */

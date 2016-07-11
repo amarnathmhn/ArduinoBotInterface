@@ -33,16 +33,19 @@ local_src  := main_$(project).cpp
 local_prog := $(project)
 
 # you can add your own local objects
-local_objs := Environment.o Obstacle.o Agent.o Wheel.o Motor.o UltrasonicSensor.o
+local_objs := Environment.o Obstacle.o Wheel.o Motor.o UltrasonicSensor.o 
 
 output_files += $(local_prog) $(local_objs)
 
 .PHONY: clean distclean devtest
 all : $(local_prog)
 # compile from CARLsim lib
-$(local_prog): $(local_src) $(local_objs)
-	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) $(local_objs) $< -o $@ $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
-	
+$(local_prog): $(local_src) $(local_objs) 
+	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) $(local_objs) Agent.o Brain.o $< -o $@ $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
+Agent.o: Agent.cpp Agent.h
+	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) Agent.cpp -c -o Agent.o $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
+Brain.o: Brain.cpp Brain.h
+	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) Brain.cpp -c -o Brain.o $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
 #utilities.o: utilities.cpp utilities.h
 #	g++ -c utilities.cpp -I/usr/include/allegro5 -L/usr/lib -lallegro -lallegro_dialog -lallegro_primitives -lallegro_dialog -lallegro_font -lallegro_ttf -lallegro_image
 #	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) utilities.cpp $< -o $@ $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)

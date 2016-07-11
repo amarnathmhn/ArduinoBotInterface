@@ -7,6 +7,10 @@
 
 #include "Environment.h"
 
+#include "carlsim.h"
+
+#include "Brain.h"
+
 using namespace std;
 
 int main() {
@@ -34,6 +38,7 @@ int main() {
 				NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		return 0;
 	}
+
 
 	//******************************************* CREATE ENVIRONMENT ********************************************
 	Environment* pEnv = new Environment(display_width, display_height);
