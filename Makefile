@@ -7,7 +7,7 @@
 USER_MK_PATH = /home/amarnath/Downloads/CARLsim-master/
 include $(USER_MK_PATH)user.mk
 
-project := ArduinoBotInterface
+project := arduinoBotInterface
 output := *.dot *.dat *.log *.csv
 
 # You should not need to edit the file beyond this point
@@ -33,12 +33,12 @@ local_src  := main_$(project).cpp
 local_prog := $(project)
 
 # you can add your own local objects
-local_objs :=
+local_objs := Environment.o Obstacle.o Agent.o Wheel.o Motor.o UltrasonicSensor.o
 
 output_files += $(local_prog) $(local_objs)
 
 .PHONY: clean distclean devtest
-all : $(local_prog) 
+all : $(local_prog)
 # compile from CARLsim lib
 $(local_prog): $(local_src) $(local_objs)
 	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) $(local_objs) $< -o $@ $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)

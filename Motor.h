@@ -9,12 +9,15 @@
 #define MOTOR_H_
 
 #include "Utilities.h"
+#include "Wheel.h"
 
 class Motor {
 
 private:
 
 	MotorRotationType motorRotationType;
+	float runTime;
+	float RPM;
 
 
 public:
@@ -25,6 +28,16 @@ public:
 	void setRotationType(MotorRotationType mrt);
 
 	MotorRotationType getRotationType();
+
+	void setRunTime(float rt);
+
+	void setRPM(float rpm);
+
+	float getRunTime();
+
+	float getRPM();
+
+	void rotateWheel(Wheel* wheel);
 
 
 };
