@@ -44,6 +44,9 @@ private:
 	std::list<Point> trail;
 	Brain* pBrain;  // brain of this agent -> implemented as SNN in Brain.cpp
 	Point refOrigin;
+	Point jumpVelocity; // velocity vector for jumps
+	bool withJump;
+	float immReward; // immediate reward
 public:
 
 	Agent(Point ref, Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );
@@ -54,9 +57,21 @@ public:
 	void draw();
 	void setEnv(Environment* pEnv);
 	void updatePosition();
+
+
+	// Motor Controlled Movements
 	void moveForward(float runTime);
+	void moveLeft(float runTime);
+	void moveRight(float runTime);
 	void turnLeft(float runTime);
 	void turnRight(float runTime);
+
+	// Abstracted Movements - To Jump North-East-West at will |-> <-
+	void setJump(bool en, float Vx, float Vy);
+	void jumpNorth();
+	void jumpWest();
+	void jumpEast();
+
 	void setTrail(bool tr);
 	bool hasCollided();
 	void setBrain(Brain* brain);

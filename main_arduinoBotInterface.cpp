@@ -83,11 +83,15 @@ int main() {
 		return -1;
 	}
 
-	Point obs1(0, 0);
-	Point obs2(display_width / 2, display_height / 2);
+	Point obs1(150, 150);
+	Point obs2(200, 300);
+	Point obs3(300, 150);
+	Point tgt1(envWidth/2 - 25, envHeight/2 - 25);
 
-	pEnv->setObstacle(obs1, 50, 50);
-	pEnv->setObstacle(obs2, 50, 50);
+	pEnv->setObstacle(obs1, 50, 200);
+	pEnv->setObstacle(obs2, 100, 50);
+	pEnv->setObstacle(obs3, 50, 200);
+	pEnv->setTarget(tgt1, 50, 50);
 	int slotSize = 50;
 	pEnv->setGrid(true, /*slotSize*/50);
 
@@ -124,6 +128,7 @@ int main() {
 	pAgent->setEnv(pEnv);
 	pAgent->setBrain(pBrain);
 	pAgent->mapPlaceCells();
+	pAgent->setJump(true, 10., 10.);
 	pAgent->draw();
 	pAgent->setTrail(true);
 

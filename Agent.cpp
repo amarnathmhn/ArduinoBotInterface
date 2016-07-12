@@ -44,6 +44,11 @@ Agent::Agent(Point ref, Point iP, float iA, int nsens, ALLEGRO_BITMAP* image) {
 		US[i].setIndex(i - nsens / 2);
 		US[i].setDSens(dSens);
 	}
+	this->withTrail = false;
+	this->withJump = false;
+	this->jumpVelocity.x = 10.;
+	this->jumpVelocity.y = 10.;
+	this->immReward = 0.;
 
 }
 
@@ -85,6 +90,10 @@ Agent::Agent(Point ref, Point iP, float iA, int nsens, float width,
 		US[i].setDSens(dSens);
 	}
 	this->withTrail = false;
+	this->withJump = false;
+	this->jumpVelocity.x = 10.;
+	this->jumpVelocity.y = 10.;
+	this->immReward = 0.;
 
 }
 
@@ -102,7 +111,7 @@ void Agent::draw() {
 		return;
 	}
 
-	printf("Agent::draw() Called\n");
+	//printf("Agent::draw() Called\n");
 	// consider frame of reference: refOrigin
 	al_draw_rotated_bitmap(image, width / 2, height / 2,
 	/*float dx*/refOrigin.x + currentPosition.x, /*float dy*/
@@ -143,9 +152,9 @@ void Agent::updatePosition() {
 	if (withTrail)
 		this->trail.push_back(currentPosition);
 
-	printf("Update Position Called:\n");
-	float dt = 0.1;
+	//printf("Update Position Called:\n");
 
+	float dt = 0.1;
 
 	// activate brain
 	if (pBrain)
@@ -153,29 +162,31 @@ void Agent::updatePosition() {
 			pBrain->setInput(currentPosition);
 			pBrain->run(0, 100);
 
-
 			switch (pBrain->getAction()) {
 
 			case 0:
-				printf("Agent::updatePosition:Brain Action FORWARD\n");
-				this->moveForward(dt);
+				printf("Agent::updatePosition:Brain Action %s\n",
+						withJump ? "Jump North" : "moveForward");
+				withJump ? this->jumpNorth() : this->moveForward(dt);
 				break;
 			case 1:
-				printf("Agent::updatePosition:Brain Action LEFT\n");
-				this->turnLeft(dt);
+				printf("Agent::updatePosition:Brain Action %s\n",
+						withJump ? "Jump West" : "moveLeft");
+				withJump ? this->jumpWest() : this->moveLeft(dt);
 				break;
 			case 2:
-				printf("Agent::updatePosition:Brain Action RIGHT\n");
-				this->turnRight(dt);
+				printf("Agent::updatePosition:Brain Action %s\n",
+						withJump ? "Jump East" : "moveRight");
+				withJump ? this->jumpEast() : this->moveRight(dt);
 				break;
 			default:
-				printf("Agent::updatePosition:DEFAULT Action FORWARD\n");
-				this->moveForward(dt);
+				printf("Agent::updatePosition:DEFAULT Action %s\n",
+						withJump ? "Jump North" : "moveForward");
+				withJump ? this->jumpNorth() : this->moveForward(dt);
 				break;
 			}
 		}
 
-	printf("after case \n");
 
 	//this->turnRight(0.01);
 	// update Sensor values while drawing them
@@ -183,10 +194,22 @@ void Agent::updatePosition() {
 		for (int i = 0; i < numOfSensors; i++)
 			this->US[i].calcDistance(pEnv, currentPosition, currentAngle);
 	}
+	immReward = 0.;
+
 	if (hasCollided()) {
 		this->currentPosition.copy(this->initialPosition);
 		this->currentAngle = 0.0;
-		printf("Collided************************\n");
+		immReward = -1.0;
+		printf("*Collided - Immediate Reward = %f *\n", immReward);
+
+	} else {
+		if (pEnv->isTarget(currentPosition)) {
+
+			this->currentPosition.copy(this->initialPosition);
+			this->currentAngle = 0.0;
+			immReward = 1.0;
+			printf("*Target Reached - Immediate Reward = %f *\n", immReward);
+		}
 	}
 
 	printf("New Position %f, %f \n", currentPosition.x, currentPosition.y);
@@ -223,6 +246,15 @@ void Agent::moveForward(float runTime) {
 	printf(
 			"Agent::moveForward():DLW = %f, DRW = %f, dx = %f, dy = %f, CurrentPosition = %f,%f\n",
 			DLW, DRW, dx, dy, currentPosition.x, currentPosition.y);
+}
+
+void Agent::moveLeft(float runTime) {
+	turnLeft(runTime);
+	moveForward(runTime);
+}
+void Agent::moveRight(float runTime) {
+	turnRight(runTime);
+	moveForward(runTime);
 }
 void Agent::turnLeft(float runTime) {
 	printf("Agent::turnLeft Called\n");
@@ -328,6 +360,32 @@ void Agent::mapPlaceCells() {
 			pBrain->neuronMap.push_back(p);
 			//pBrain->neuronMap[0].print();
 		}
+	}
+
+}
+
+// Jump functions are idealistic now
+// need to be implemented in a realistic way
+// using motors and motor runtime
+void Agent::jumpNorth() {
+
+	this->currentPosition.y -= this->jumpVelocity.y;
+
+}
+void Agent::jumpWest() {
+
+	this->currentPosition.x -= this->jumpVelocity.x;
+}
+void Agent::jumpEast() {
+
+	this->currentPosition.x += this->jumpVelocity.x;
+}
+
+void Agent::setJump(bool en, float Vx, float Vy) {
+	this->withJump = en;
+	if (en) {
+		this->jumpVelocity.x = Vx;
+		this->jumpVelocity.y = Vy;
 	}
 
 }

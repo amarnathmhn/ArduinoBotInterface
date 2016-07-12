@@ -119,11 +119,11 @@ void Brain::setInput(Point pos){
 
 }
 void Brain::run(float sec, float msec){
-	printf("DEBUG:: running simulation\n");
+	//printf("DEBUG:: running simulation\n");
 	// set the rates and run network
 	this->poissRate_place->setRates(this->inputFiringRates);
 
-	printf("DEBUG:: input size rates = %ld\n", this->inputFiringRates.size());
+	//printf("DEBUG:: input size rates = %ld\n", this->inputFiringRates.size());
 
 	this->sm_action->startRecording();
 	this->sm_place->startRecording();
@@ -133,7 +133,7 @@ void Brain::run(float sec, float msec){
 	this->sm_action->stopRecording();
 	this->sm_place->stopRecording();
 
-	printf("DEBUG:: end of simulation, out firing rates\n");
+	//printf("DEBUG:: end of simulation, out firing rates\n");
 }
 
 int Brain::getNumPlaceCells(){
@@ -141,7 +141,7 @@ int Brain::getNumPlaceCells(){
 }
 int Brain::getAction(){
 	std::vector<float> outRates = sm_action->getAllFiringRates();
-	printf("DEBUG:: Rate[0] = %f, Rate[1] = %f, Rate[2] = %f\n", outRates[0], outRates[1], outRates[2]);
+	//printf("DEBUG:: Rate[0] = %f, Rate[1] = %f, Rate[2] = %f\n", outRates[0], outRates[1], outRates[2]);
 	float max = outRates[0];
 	int ret = 0;
 	for(int i=1; i < outRates.size(); i++){

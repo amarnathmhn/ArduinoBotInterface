@@ -21,12 +21,16 @@ public:
 	int slotSize;
 	int withGrid;
 	std::list<Obstacle> obstacles;
+	std::list<Obstacle> targets;
+
 
 public:
 	Environment(int width, int height, int dispWidth, int dispHeight);
 	virtual ~Environment();
 
 	void setObstacle(Point p, int w, int h);
+	void setTarget(Point p, int w, int h);
+	bool isTarget(Point pos);
 
 	void draw();
 
