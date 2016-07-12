@@ -151,3 +151,12 @@ void Environment :: drawGrid(bool showCenter){
 	*/
 }
 
+Point Environment:: getContainingSlotCenter(Point P){
+	// Point is assumed with respect to
+
+	return Point(-1,-1);
+}
+
+bool Environment::hasGrid(){
+	return withGrid;
+}

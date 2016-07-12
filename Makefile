@@ -40,7 +40,7 @@ output_files += $(local_prog) $(local_objs)
 .PHONY: clean distclean devtest
 all : $(local_prog)
 # compile from CARLsim lib
-$(local_prog): $(local_src) $(local_objs) 
+$(local_prog): $(local_src) $(local_objs) Agent.o Brain.o
 	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) $(local_objs) Agent.o Brain.o $< -o $@ $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
 Agent.o: Agent.cpp Agent.h
 	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) Agent.cpp -c -o Agent.o $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
@@ -51,7 +51,7 @@ Brain.o: Brain.cpp Brain.h
 #	$(NVCC) $(CARLSIM_INCLUDES) $(CARLSIM_FLAGS) utilities.cpp $< -o $@ $(CARLSIM_LFLAGS) $(CARLSIM_LIBS)
 
 clean:
-	$(RM) $(output_files)
+	$(RM) $(output_files) Agent.o Brain.o
 
 distclean:
 	$(RM) $(output_files) results/*

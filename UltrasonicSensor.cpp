@@ -53,6 +53,8 @@ void UltrasonicSensor::calcDistance(Environment* pEnv, Point position, float ang
 	bool brkObsLoop = false;
 	double dl = 0.0;
 	double maxDiag = sqrt(pEnv->width * pEnv->width + pEnv->height*pEnv->height);
+	double woffset = pEnv->dispWidth - pEnv->width;
+	double hoffset = pEnv->dispHeight - pEnv->height;
 	// Check the sensor distance for each obstacle
 	for (dl = 0.0; dl < maxDiag; dl += 1) {
 
@@ -65,8 +67,8 @@ void UltrasonicSensor::calcDistance(Environment* pEnv, Point position, float ang
 		while ( itr != pEnv->obstacles.end()) {
 
 			if (itr->hasPoint(x, y)) {
-				al_draw_line(/*float x1*/position.x, /*float y1*/position.y,
-				/*float x2*/x, /*float y2*/y,
+				al_draw_line(/*float x1*/woffset + position.x, /*float y1*/hoffset + position.y,
+				/*float x2*/woffset+x, /*float y2*/hoffset+y,
 				/*ALLEGRO_COLOR color*/al_map_rgb(255, 0, 0),
 				/*float thickness*/0);
 
@@ -82,9 +84,9 @@ void UltrasonicSensor::calcDistance(Environment* pEnv, Point position, float ang
 		if (brkObsLoop)
 			break;
 		else {
-			if (x <= (pEnv->dispWidth - pEnv->width) || x >= pEnv->width || y <= (pEnv->dispHeight - pEnv->height) || y >= pEnv->height) {
-				al_draw_line(/*float x1*/position.x, /*float y1*/position.y,
-				/*float x2*/x, /*float y2*/y,
+			if (x <= 0 || x >= pEnv->width || y <= 0 || y >= pEnv->height) {
+				al_draw_line(/*float x1*/woffset+position.x, /*float y1*/hoffset+position.y,
+				/*float x2*/woffset+x, /*float y2*/hoffset+y,
 				/*ALLEGRO_COLOR color*/al_map_rgb(255, 0, 0),
 				/*float thickness*/0);
 

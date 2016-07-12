@@ -15,8 +15,8 @@ using namespace std;
 
 int main() {
 
-	int display_width = 1200;
-	int display_height = 600;
+	int display_width  = 500;
+	int display_height = 500;
 
 	float FPS = 10;
 	// declare allegro display pointer
@@ -71,12 +71,14 @@ int main() {
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	//******************************************* CREATE ENVIRONMENT ********************************************
-	int woffset = 200;
+	int woffset = 0;
 	int hoffset = 0;
 	int envWidth = display_width - woffset; // leave room for monitoring
 	int envHeight = display_height - hoffset;
+
 	Environment* pEnv = new Environment(envWidth, envHeight, display_width,
 			display_height);
+
 	if (!pEnv) {
 		printf("Error:main(): Environment Couldn't be Created\n");
 		return -1;
@@ -87,15 +89,23 @@ int main() {
 
 	pEnv->setObstacle(obs1, 50, 50);
 	pEnv->setObstacle(obs2, 50, 50);
-
-	pEnv->setGrid();
+	int slotSize = 50;
+	pEnv->setGrid(true, /*slotSize*/50);
 
 	pEnv->draw();
 
 	al_flip_display();
 	al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	//******************************************* CREATE BRAIN **************************************************
+
+	int nPlaceCells = 100;
+	int nActions = 3;
+	Brain* pBrain = new Brain();
+	pBrain->createHippocampal(nPlaceCells, nActions);
+
 	//******************************************* CREATE AGENT **************************************************
-	Point initPos(woffset + 50, hoffset + envHeight - 50);
+	Point initPos(50, envHeight - 50);
 	float initAngle = 0.0;
 	int nSens = 5;
 	ALLEGRO_BITMAP* img = al_load_bitmap("boe.png");
@@ -105,13 +115,16 @@ int main() {
 		return -1;
 	}
 
-	Agent* pAgent = new Agent(initPos, initAngle, nSens, img);
+	Agent* pAgent = new Agent(Point(woffset, hoffset),initPos, initAngle, nSens, img);
 
 	if (!pAgent) {
 		printf("Error:main(): Agent Couldn't be Created\n");
 		return -1;
 	}
+
 	pAgent->setEnv(pEnv);
+	pAgent->setBrain(pBrain);
+	pAgent->mapPlaceCells();
 	pAgent->draw();
 	pAgent->setTrail(true);
 
@@ -185,5 +198,6 @@ int main() {
 		al_destroy_bitmap(img);
 	if (display)
 		al_destroy_display(display);
+	//if (pBrain) delete pBrain ;
 
 }

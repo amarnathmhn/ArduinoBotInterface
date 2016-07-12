@@ -43,10 +43,11 @@ private:
 	bool withTrail;
 	std::list<Point> trail;
 	Brain* pBrain;  // brain of this agent -> implemented as SNN in Brain.cpp
+	Point refOrigin;
 public:
 
-	Agent(Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );
-	Agent(Point iP, float iA, int nsens, float width, float height);
+	Agent(Point ref, Point iP, float iA, int nsens, ALLEGRO_BITMAP* image );
+	Agent(Point ref, Point iP, float iA, int nsens, float width, float height);
 	virtual ~Agent();
 	Point getCurrentPosition();
 	float getCurrentAngle();
@@ -59,6 +60,7 @@ public:
 	void setTrail(bool tr);
 	bool hasCollided();
 	void setBrain(Brain* brain);
+	void mapPlaceCells();
 };
 
 #endif /* AGENT_H_ */

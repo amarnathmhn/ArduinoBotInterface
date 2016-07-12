@@ -1,10 +1,204 @@
-[INFO carlsim/kernel/src/snn_cpu.cpp:2029] Created results directory "results/".
 [INFO carlsim/kernel/src/snn_cpu.cpp:2051] *********************************************************************************
 [INFO carlsim/kernel/src/snn_cpu.cpp:2053] ********************      Welcome to CARLsim 3.0      ***************************
 [INFO carlsim/kernel/src/snn_cpu.cpp:2054] *********************************************************************************
 
 [INFO carlsim/kernel/src/snn_cpu.cpp:2056] ***************************** Configuring Network ********************************
-[INFO carlsim/kernel/src/snn_cpu.cpp:2058] Starting CARLsim simulation "dummy" in USER mode
-[INFO carlsim/kernel/src/snn_cpu.cpp:2059] Random number seed: 1468197005
-[DEBUG carlsim/kernel/src/snn_cpu.cpp:2065] Current local time and date: Sun Jul 10 19:30:05 2016
+[INFO carlsim/kernel/src/snn_cpu.cpp:2058] Starting CARLsim simulation "Brain Controller" in USER mode
+[INFO carlsim/kernel/src/snn_cpu.cpp:2059] Random number seed: 1468288821
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2065] Current local time and date: Mon Jul 11 21:00:21 2016
+
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:207] grp_Info[0, PlaceCells].numPostSynapses = 3, grp_Info[1, Action].numPreSynapses = 100
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:215] CONNECT SETUP: connId=0, mulFast=1.000000, mulSlow=1.000000
+[INFO carlsim/kernel/src/snn_cpu.cpp:763] Update weight and weight change every 10 ms
+[INFO carlsim/kernel/src/snn_cpu.cpp:764] Weight Change Decay is enabled
+[INFO carlsim/kernel/src/snn_cpu.cpp:765] STDP scale factor = 0.005, wtChangeDecay = 0.900
+[INFO carlsim/kernel/src/snn_cpu.cpp:650] E-STDP enabled for Action(1)
+[INFO carlsim/kernel/src/snn_cpu.cpp:460] Running COBA mode:
+[INFO carlsim/kernel/src/snn_cpu.cpp:461]   - AMPA decay time            =     5 ms
+[INFO carlsim/kernel/src/snn_cpu.cpp:462]   - NMDA rise time (disabled)  =     0 ms
+[INFO carlsim/kernel/src/snn_cpu.cpp:463]   - GABAa decay time           =     6 ms
+[INFO carlsim/kernel/src/snn_cpu.cpp:464]   - GABAb rise time (disabled) =     0 ms
+[INFO carlsim/kernel/src/snn_cpu.cpp:465]   - GABAb decay time           =   150 ms
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:4526] Beginning reorganization of network....
+[INFO carlsim/kernel/src/snn_cpu.cpp:2512] 
+
+[INFO carlsim/kernel/src/snn_cpu.cpp:2513] ***************************** Setting up Network **********************************
+[INFO carlsim/kernel/src/snn_cpu.cpp:2515] numN = 103, numPostSynapses = 3, numPreSynapses = 100, maxDelay = 1
+[INFO carlsim/kernel/src/snn_cpu.cpp:2344] allocated nSpikeCnt
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2472] Allocation for 1(Action), St=0, End=2
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2704] Allocation for 0(PlaceCells), St=3, End=102
+[INFO carlsim/kernel/src/print_snn_info.cpp:288] Group PlaceCells(0): 
+[INFO carlsim/kernel/src/print_snn_info.cpp:291]   - Type                       =    EXCIT
+[INFO carlsim/kernel/src/print_snn_info.cpp:292]   - Size                       =      100
+[INFO carlsim/kernel/src/print_snn_info.cpp:293]   - Start Id                   =        3
+[INFO carlsim/kernel/src/print_snn_info.cpp:294]   - End Id                     =      102
+[INFO carlsim/kernel/src/print_snn_info.cpp:295]   - numPostSynapses            =        3
+[INFO carlsim/kernel/src/print_snn_info.cpp:296]   - numPreSynapses             =        0
+[INFO carlsim/kernel/src/print_snn_info.cpp:304]   - Refractory period          =  0.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:288] Group Action(1): 
+[INFO carlsim/kernel/src/print_snn_info.cpp:291]   - Type                       =    EXCIT
+[INFO carlsim/kernel/src/print_snn_info.cpp:292]   - Size                       =        3
+[INFO carlsim/kernel/src/print_snn_info.cpp:293]   - Start Id                   =        0
+[INFO carlsim/kernel/src/print_snn_info.cpp:294]   - End Id                     =        2
+[INFO carlsim/kernel/src/print_snn_info.cpp:295]   - numPostSynapses            =        0
+[INFO carlsim/kernel/src/print_snn_info.cpp:296]   - numPreSynapses             =      100
+[INFO carlsim/kernel/src/print_snn_info.cpp:316]   - STDP:
+[INFO carlsim/kernel/src/print_snn_info.cpp:318]       - E-STDP TYPE            =   DA_MOD
+[INFO carlsim/kernel/src/print_snn_info.cpp:320]       - I-STDP TYPE            =  UNKNOWN
+[INFO carlsim/kernel/src/print_snn_info.cpp:321]       - ALPHA_PLUS_EXC         =  0.00100
+[INFO carlsim/kernel/src/print_snn_info.cpp:322]       - ALPHA_MINUS_EXC        = -0.01500
+[INFO carlsim/kernel/src/print_snn_info.cpp:323]       - TAU_PLUS_INV_EXC       =  0.05000
+[INFO carlsim/kernel/src/print_snn_info.cpp:324]       - TAU_MINUS_INV_EXC      =  0.05000
+[INFO carlsim/kernel/src/print_snn_info.cpp:325]       - BETA_LTP               =  0.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:326]       - BETA_LTD               =  0.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:327]       - LAMBDA                 =  0.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:328]       - DELTA                  =  0.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:270] Connection ID 0: PlaceCells(0) => Action(1)
+[INFO carlsim/kernel/src/print_snn_info.cpp:271]   - Type                       =  PLASTIC
+[INFO carlsim/kernel/src/print_snn_info.cpp:272]   - Min weight                 =  0.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:273]   - Max weight                 =  5.00000
+[INFO carlsim/kernel/src/print_snn_info.cpp:274]   - Initial weight             =  0.10000
+[INFO carlsim/kernel/src/print_snn_info.cpp:275]   - Min delay                  =        1
+[INFO carlsim/kernel/src/print_snn_info.cpp:276]   - Max delay                  =        1
+[INFO carlsim/kernel/src/print_snn_info.cpp:277]   - Radius X                   =    -1.00
+[INFO carlsim/kernel/src/print_snn_info.cpp:278]   - Radius Y                   =    -1.00
+[INFO carlsim/kernel/src/print_snn_info.cpp:279]   - Radius Z                   =    -1.00
+[INFO carlsim/kernel/src/print_snn_info.cpp:283]   - Avg numPreSynapses         =      100
+[INFO carlsim/kernel/src/print_snn_info.cpp:284]   - Avg numPostSynapses        =        3
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2784] ******************
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2785] CompactConnection: 
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2786] ******************
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2787] old_postCnt = 300, new_postCnt = 300
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:2788] old_preCnt = 300,  new_postCnt = 300
+[DEBUG carlsim/kernel/src/print_snn_info.cpp:66] checkNetworkBuilt()
+[DEBUG carlsim/kernel/src/print_snn_info.cpp:67] Network not yet elaborated and built...
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:4947] Grp: 0:PlaceCells s=3 e=102 
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:4949] Grp: 0:PlaceCells s=3 e=102  
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:4947] Grp: 1:Action s=0 e=2 
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:4949] Grp: 1:Action s=0 e=2  
+[DEBUG carlsim/kernel/src/snn_cpu.cpp:4986] 	0 (PlaceCells) start=0, type=P maxWts = 5.000000 (**)
+[INFO carlsim/kernel/src/snn_cpu.cpp:4561] 
+[INFO carlsim/kernel/src/snn_cpu.cpp:4563] *****************      Initializing CPU Simulation      *************************
+[INFO carlsim/kernel/src/snn_cpu.cpp:1189] ConnectionMonitor 0 set for Connection 0: 0(PlaceCells) => 1(Action)
+[INFO carlsim/kernel/src/snn_cpu.cpp:1284] SpikeMonitor set for group 1 (Action)
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:271] (t=0.000s) ConnectionMonitor ID=0: 0(PlaceCells) => 1(Action)
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:281]  pre\post |        0 |        1 |        2 |
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:282] ----------|---------------------------------
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         0 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         1 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         2 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         3 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         4 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         5 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         6 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         7 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         8 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]         9 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        10 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        11 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        12 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        13 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        14 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        15 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        16 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        17 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        18 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        19 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        20 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        21 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        22 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        23 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        24 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        25 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        26 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        27 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        28 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        29 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        30 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        31 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        32 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        33 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        34 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        35 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        36 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        37 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        38 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        39 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        40 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        41 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        42 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        43 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        44 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        45 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        46 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        47 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        48 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        49 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        50 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        51 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        52 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        53 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        54 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        55 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        56 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        57 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        58 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        59 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        60 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        61 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        62 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        63 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        64 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        65 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        66 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        67 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        68 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        69 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        70 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        71 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        72 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        73 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        74 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        75 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        76 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        77 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        78 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        79 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        80 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        81 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        82 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        83 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        84 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        85 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        86 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        87 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        88 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        89 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        90 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        91 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        92 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        93 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        94 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        95 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        96 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        97 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        98 |   0.1000     0.1000     0.1000  
+[INFO carlsim/connection_monitor/connection_monitor_core.cpp:291]        99 |   0.1000     0.1000     0.1000  
+[INFO carlsim/kernel/src/snn_cpu.cpp:3046] 
+
+[INFO carlsim/kernel/src/snn_cpu.cpp:3048] ********************      CPU Simulation Summary      ***************************
+[INFO carlsim/kernel/src/snn_cpu.cpp:3051] Network Parameters: 	numNeurons = 103 (numNExcReg:numNInhReg = 2.9:0.0)
+[INFO carlsim/kernel/src/snn_cpu.cpp:3052] 			numSynapses = 300
+[INFO carlsim/kernel/src/snn_cpu.cpp:3053] 			maxDelay = 1
+[INFO carlsim/kernel/src/snn_cpu.cpp:3054] Simulation Mode:	COBA
+[INFO carlsim/kernel/src/snn_cpu.cpp:3055] Random Seed:		1468288821
+[INFO carlsim/kernel/src/snn_cpu.cpp:3056] Timing:			Model Simulation Time = 0 sec
+[INFO carlsim/kernel/src/snn_cpu.cpp:3057] 			Actual Execution Time = 0.00 sec
+[INFO carlsim/kernel/src/snn_cpu.cpp:3058] Average Firing Rate:	2+ms delay = -nan Hz
+[INFO carlsim/kernel/src/snn_cpu.cpp:3059] 			1ms delay = -nan Hz
+[INFO carlsim/kernel/src/snn_cpu.cpp:3060] 			Overall = -nan Hz
+[INFO carlsim/kernel/src/snn_cpu.cpp:3061] Overall Firing Count:	2+ms delay = 0
+[INFO carlsim/kernel/src/snn_cpu.cpp:3062] 			1ms delay = 0
+[INFO carlsim/kernel/src/snn_cpu.cpp:3063] 			Total = 0
+[INFO carlsim/kernel/src/snn_cpu.cpp:3064] *********************************************************************************
 

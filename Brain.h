@@ -10,6 +10,9 @@
 
 #include "carlsim.h"
 #include "math.h"
+#include <cstdlib>
+#include "Utilities.h"
+
 class Brain {
 
 private:
@@ -29,12 +32,23 @@ private:
 	SpikeMonitor* sm_action;
 	// Input for Place cells
 	PoissonRate* poissRate_place;
+	// Agent location
+	Point position;
+	// Neuron Mapping to actual location
+public:
+	std::vector<Point> neuronMap;
+	std::vector<float> inputFiringRates;
 public:
 	Brain();
 	void createHippocampal(int nPlace, int nAction);
+	void setInput(Point position);
+	void run(float sec, float msec);
+
+
 	virtual ~Brain();
 
 	void setRandomWeights(ConnectionMonitor* cm, float minWt, float maxWt);
+	int getNumPlaceCells();
 };
 
 #endif /* BRAIN_H_ */

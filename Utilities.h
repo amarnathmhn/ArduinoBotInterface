@@ -56,6 +56,9 @@ public:
 		this->x = P.x;
 		this->y = P.y;
 	}
+	float getSquareDist(Point P){
+		return (x - P.x)*(x - P.x) + (y - P.y)*(y - P.y);
+	}
 
 };
 
