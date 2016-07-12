@@ -30,6 +30,8 @@ private:
 	ConnectionMonitor* cm_place_action;
 	// Spike Monitor for Action cells
 	SpikeMonitor* sm_action;
+	// Spike Monitor for Input Cells
+	SpikeMonitor* sm_place;
 	// Input for Place cells
 	PoissonRate* poissRate_place;
 	// Agent location
@@ -49,6 +51,7 @@ public:
 
 	void setRandomWeights(ConnectionMonitor* cm, float minWt, float maxWt);
 	int getNumPlaceCells();
+	int getAction();
 };
 
 #endif /* BRAIN_H_ */

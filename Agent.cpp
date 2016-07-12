@@ -36,22 +36,14 @@ Agent::Agent(Point ref, Point iP, float iA, int nsens, ALLEGRO_BITMAP* image) {
 
 	this->dSens = ALLEGRO_PI / (nsens - 1);
 
+	this->pBrain = NULL;
+	this->pEnv = NULL;
 	// initialize sensors
 	for (int i = 0; i < nsens; i++) {
 
 		US[i].setIndex(i - nsens / 2);
 		US[i].setDSens(dSens);
 	}
-
-//	this->withTrail = false;
-//
-//	this->pEnv = NULL;
-//
-//	this->pBrain = new Brain();
-//
-//	if (pBrain) {
-//		pBrain->createHippocampal(100, 3);
-//	}
 
 }
 
@@ -83,6 +75,8 @@ Agent::Agent(Point ref, Point iP, float iA, int nsens, float width,
 	this->US = new UltrasonicSensor[nsens];
 
 	this->dSens = 3.14 / (nsens - 1);
+	this->pBrain = NULL;
+	this->pEnv = NULL;
 
 	// initialize sensors
 	for (int i = 0; i < nsens; i++) {
@@ -91,13 +85,7 @@ Agent::Agent(Point ref, Point iP, float iA, int nsens, float width,
 		US[i].setDSens(dSens);
 	}
 	this->withTrail = false;
-	this->pEnv = NULL;
 
-//	this->pBrain = new Brain();
-//
-//	if (pBrain) {
-//		pBrain->createHippocampal(100, 3);
-//	}
 }
 
 Agent::~Agent() {
@@ -118,9 +106,9 @@ void Agent::draw() {
 	// consider frame of reference: refOrigin
 	al_draw_rotated_bitmap(image, width / 2, height / 2,
 	/*float dx*/refOrigin.x + currentPosition.x, /*float dy*/
-			refOrigin.y + currentPosition.y,
-			/*float radian angle*/currentAngle,
-			/*int flags*/0);
+	refOrigin.y + currentPosition.y,
+	/*float radian angle*/currentAngle,
+	/*int flags*/0);
 
 	if (withTrail) {
 		std::list<Point>::iterator itr = trail.begin();
@@ -158,21 +146,36 @@ void Agent::updatePosition() {
 	printf("Update Position Called:\n");
 	float dt = 0.1;
 
-	int dir = rand() % 3;
-	switch (dir) {
 
-	case 0:
-		this->moveForward(dt);
-		break;
-	case 1:
-		this->turnLeft(dt);
-		break;
-	case 2:
-		this->turnRight(dt);
-		break;
-	}
+	// activate brain
+	if (pBrain)
+		if (pBrain->neuronMap.size() != 0) {
+			pBrain->setInput(currentPosition);
+			pBrain->run(0, 100);
 
-	pBrain->setInput(currentPosition);
+
+			switch (pBrain->getAction()) {
+
+			case 0:
+				printf("Agent::updatePosition:Brain Action FORWARD\n");
+				this->moveForward(dt);
+				break;
+			case 1:
+				printf("Agent::updatePosition:Brain Action LEFT\n");
+				this->turnLeft(dt);
+				break;
+			case 2:
+				printf("Agent::updatePosition:Brain Action RIGHT\n");
+				this->turnRight(dt);
+				break;
+			default:
+				printf("Agent::updatePosition:DEFAULT Action FORWARD\n");
+				this->moveForward(dt);
+				break;
+			}
+		}
+
+	printf("after case \n");
 
 	//this->turnRight(0.01);
 	// update Sensor values while drawing them
@@ -208,7 +211,6 @@ void Agent::moveForward(float runTime) {
 	float DLW = (this->WL.getAngleRotated()) * (this->WL.getDiameter()) / 2; // left wheel distance
 	float DRW = (this->WR.getAngleRotated()) * (this->WR.getDiameter()) / 2; // right wheel distance
 
-
 	float dTheta = (DLW - DRW) / this->width;  // rotation about C.O.M
 
 	float dx = 0.5 * (DLW + DRW) * sin(currentAngle);
@@ -218,7 +220,8 @@ void Agent::moveForward(float runTime) {
 	currentPosition.y -= dy;
 	currentAngle += dTheta;
 
-	printf("Agent::moveForward():DLW = %f, DRW = %f, dx = %f, dy = %f, CurrentPosition = %f,%f\n",
+	printf(
+			"Agent::moveForward():DLW = %f, DRW = %f, dx = %f, dy = %f, CurrentPosition = %f,%f\n",
 			DLW, DRW, dx, dy, currentPosition.x, currentPosition.y);
 }
 void Agent::turnLeft(float runTime) {
@@ -289,37 +292,42 @@ void Agent::setBrain(Brain* br) {
 		this->pBrain = br;
 	}
 }
-void Agent::mapPlaceCells(){
+void Agent::mapPlaceCells() {
 
-	if(!pBrain){
+	if (!pBrain) {
 		printf("*Agent::mapPlaceCells- No brain found\n");
-		return ;
+		return;
 	}
 
-	if( !pEnv ){
+	if (!pEnv) {
 
 		printf("*Agent::mapPlaceCells- No Environment Pointer found\n");
-		return ;
+		return;
 	}
 
-	if( !( pEnv->hasGrid() ) ){
+	if (!(pEnv->hasGrid())) {
 		printf("*Agent::mapPlaceCells- Env has No grid, Please enable it\n");
-		return ;
+		return;
 	}
 	// for each grid location, get its actual co-ordinates in pixels
-	int cols = pEnv->width/pEnv->slotSize;
-	int rows = pEnv->height/pEnv->slotSize;
+	int cols = pEnv->width / pEnv->slotSize;
+	int rows = pEnv->height / pEnv->slotSize;
 
-	if(cols*rows != pBrain->getNumPlaceCells()){
-		printf("*Agent::mapPlaceCells-rows and columns inconsistent with place cell number\n");
-		return ;
+	if (cols * rows != pBrain->getNumPlaceCells()) {
+		printf(
+				"*Agent::mapPlaceCells-rows and columns inconsistent with place cell number\n");
+		return;
 	}
 
-	for(int c = 0; c < cols; c++){
-		for(int r=0; r< rows; r++){
+	for (int c = 0; c < cols; c++) {
+		for (int r = 0; r < rows; r++) {
 			// get actual co-ordinates
 			Point p = pEnv->getGridSlotCenter(c, r);
+			//printf("c=%d, r = %d, P = ",c,r);
+			//p.print();
 			pBrain->neuronMap.push_back(p);
+			//pBrain->neuronMap[0].print();
 		}
 	}
+
 }

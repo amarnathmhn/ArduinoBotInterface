@@ -18,6 +18,7 @@ Brain::Brain() {
 	this->nPlace = 100;
 	this->poissRate_place = NULL;
 	this->sm_action = NULL;
+	this->sm_place = NULL;
 
 }
 
@@ -52,7 +53,7 @@ void Brain::setRandomWeights(ConnectionMonitor* connMon, float minWt,
 void Brain::createHippocampal(int nPlace, int nAction) {
 
 	// resize the neuronmap to number of place cells
-	this->neuronMap.resize(nPlace);
+	//this->neuronMap.resize(nPlace);
 	this->inputFiringRates.resize(nPlace);
 
 	// Create Brain Here
@@ -63,12 +64,11 @@ void Brain::createHippocampal(int nPlace, int nAction) {
 	if (!sim) {
 		printf("Brain::createHippocampal: failed because sim is NULL\n");
 	}
-	this->gPlace = sim->createSpikeGeneratorGroup("PlaceCells", Grid3D(10, 10),
-			EXCITATORY_NEURON);
+	this->gPlace = sim->createSpikeGeneratorGroup("PlaceCells", nPlace, EXCITATORY_NEURON);
 	this->gAction = sim->createGroup("Action", nAction, EXCITATORY_NEURON);
 
 	this->cId_place_action = sim->connect(gPlace, gAction, "full",
-			RangeWeight(0, 0.1, 5.0), 1.0f, RangeDelay(1.0f), RadiusRF(-1),
+			RangeWeight(0, 0.1, 0.5), 0.5f, RangeDelay(1.0f), RadiusRF(-1),
 			SYN_PLASTIC);
 
 	sim->setWeightAndWeightChangeUpdate(INTERVAL_10MS, true, 0.90f);
@@ -88,6 +88,7 @@ void Brain::createHippocampal(int nPlace, int nAction) {
 	this->cm_place_action = sim->setConnectionMonitor(gPlace, gAction,
 			"DEFAULT");
 	this->sm_action = sim->setSpikeMonitor(gAction, "DEFAULT");
+	this->sm_place = sim->setSpikeMonitor(gPlace, "DEFAULT");
 
 	srand(static_cast<unsigned>(time(0)));
 	setRandomWeights(cm_place_action, 0, 5);
@@ -101,20 +102,54 @@ void Brain::setInput(Point pos){
 	this->position.copy(pos);
 
 	// Calculate Firing Rates as mentioned in the paper
+	this->inputFiringRates.resize(nPlace);
+
 	for(int n = 0; n < nPlace; n++){
 
+		//neuronMap[n].print();
+		//position.print();
+
 		float fmax = 10.;
-		float f = fmax * exp( -position.getSquareDist(neuronMap[n])/2. );
-		this->inputFiringRates.push_back(f);
+		float f = fmax * exp( -position.getSquareDist(neuronMap[n])/(2*500.*500.) );
+		this->inputFiringRates[n] = f;
+		//printf("Brain::setInput::Calculated Firing Rate for n = %d is %f, dist = %f\n", n, f, position.getSquareDist(neuronMap[n])/2);
 
 
 	}
 
 }
 void Brain::run(float sec, float msec){
+	printf("DEBUG:: running simulation\n");
+	// set the rates and run network
+	this->poissRate_place->setRates(this->inputFiringRates);
 
+	printf("DEBUG:: input size rates = %ld\n", this->inputFiringRates.size());
+
+	this->sm_action->startRecording();
+	this->sm_place->startRecording();
+
+	sim->runNetwork(sec, msec, false);
+
+	this->sm_action->stopRecording();
+	this->sm_place->stopRecording();
+
+	printf("DEBUG:: end of simulation, out firing rates\n");
 }
 
 int Brain::getNumPlaceCells(){
 	return this->nPlace;
+}
+int Brain::getAction(){
+	std::vector<float> outRates = sm_action->getAllFiringRates();
+	printf("DEBUG:: Rate[0] = %f, Rate[1] = %f, Rate[2] = %f\n", outRates[0], outRates[1], outRates[2]);
+	float max = outRates[0];
+	int ret = 0;
+	for(int i=1; i < outRates.size(); i++){
+		if(outRates[i] > max){
+			max = outRates[i];
+			ret = i;
+		}
+	}
+
+	return ret;
 }

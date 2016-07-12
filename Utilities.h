@@ -17,9 +17,14 @@
 
 #include<math.h>
 #include<cstdlib>
+#include <cstdio>
 enum MotorRotationType {
 	FORWARD, BACKWARD, NONE
 };
+
+#define MOVEFORWARD 0;
+#define TURNLEFT    1;
+#define TURNRIGHT   2;
 
 enum obstacle_shape_t {
 	RECTANGLE, CIRCLE
@@ -58,6 +63,9 @@ public:
 	}
 	float getSquareDist(Point P){
 		return (x - P.x)*(x - P.x) + (y - P.y)*(y - P.y);
+	}
+	void print(){
+		printf("( %f, %f )\n", x, y);
 	}
 
 };

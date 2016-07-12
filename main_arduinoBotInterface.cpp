@@ -76,8 +76,7 @@ int main() {
 	int envWidth = display_width - woffset; // leave room for monitoring
 	int envHeight = display_height - hoffset;
 
-	Environment* pEnv = new Environment(envWidth, envHeight, display_width,
-			display_height);
+	Environment* pEnv = new Environment(envWidth, envHeight, display_width, display_height);
 
 	if (!pEnv) {
 		printf("Error:main(): Environment Couldn't be Created\n");
