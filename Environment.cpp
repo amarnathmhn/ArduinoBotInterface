@@ -6,6 +6,8 @@
  */
 
 #include "Environment.h"
+#include <algorithm>
+#include <vector>
 
 #include <cstdio>
 Environment::Environment(int w, int h, int dw, int dh) {
@@ -206,3 +208,26 @@ bool Environment::isTarget(Point pos) {
 
 	return false;
 }
+void Environment::visualizePlaceCellFiring(std::vector<Point> neuronMap, std::vector<float>rates){
+
+	for(unsigned int i=0 ;i <neuronMap.size(); i++){
+		float max = *std::max_element(std::begin(rates), std::end(rates));
+		int intensity = rates[i]*255/max;
+		al_draw_filled_circle(neuronMap[i].x, neuronMap[i].y, 10., al_map_rgb(0, 0, intensity));
+	}
+}
+// check if a given position is invalid
+bool Environment::isInvalid(Point p){
+	// check if out of borders
+	if(p.x <= 0 || p.x >= width || p.y <= 0 || p.y >= height){
+		return true;
+	}else { // check all obstacles
+		for(std::list<Obstacle>::iterator itr = obstacles.begin(); itr != obstacles.end(); itr++){
+			if(itr->hasPoint(p.x, p.y)){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+

@@ -10,6 +10,7 @@
 
 #include<list>
 #include "Obstacle.h"
+#include<vector>
 
 class Environment {
 
@@ -46,6 +47,10 @@ public:
 	Point getContainingSlotCenter(Point P);
 
 	bool hasGrid();
+
+	void visualizePlaceCellFiring(std::vector<Point> neuronMap, std::vector<float>rates);
+
+	bool isInvalid(Point p);
 };
 
 #endif /* ENVIRONMENT_H_ */

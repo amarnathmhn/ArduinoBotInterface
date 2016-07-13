@@ -63,14 +63,20 @@ public:
 	void moveForward(float runTime);
 	void moveLeft(float runTime);
 	void moveRight(float runTime);
+	void moveBackward(float runTime);
 	void turnLeft(float runTime);
 	void turnRight(float runTime);
+	int getCollisionAvoidanceAction();
+	int getCollisionSeekingAction();
 
 	// Abstracted Movements - To Jump North-East-West at will |-> <-
 	void setJump(bool en, float Vx, float Vy);
 	void jumpNorth();
 	void jumpWest();
 	void jumpEast();
+	void jumpSouth();
+
+	void printAction(int action);
 
 	void setTrail(bool tr);
 	bool hasCollided();

@@ -1,0 +1,103 @@
+*********************************************************************************
+********************      Welcome to CARLsim 3.0      ***************************
+*********************************************************************************
+
+***************************** Configuring Network ********************************
+Starting CARLsim simulation "Brain Controller" in USER mode
+Random number seed: 1468391409
+E-STDP enabled for Action(1)
+E-STDP enabled for Action(2)
+E-STDP enabled for Action(3)
+E-STDP enabled for Action(4)
+Update weight and weight change every 10 ms
+Weight Change Decay is enabled
+STDP scale factor = 0.005, wtChangeDecay = 0.900
+Running COBA mode:
+  - AMPA decay time            =     5 ms
+  - NMDA rise time (disabled)  =     0 ms
+  - GABAa decay time           =     6 ms
+  - GABAb rise time (disabled) =     0 ms
+  - GABAb decay time           =   150 ms
+
+
+***************************** Setting up Network **********************************
+numN = 104, numPostSynapses = 4, numPreSynapses = 100, maxDelay = 1
+allocated nSpikeCnt
+Group PlaceCells(0): 
+  - Type                       =    EXCIT
+  - Size                       =      100
+  - Start Id                   =        4
+  - End Id                     =      103
+  - numPostSynapses            =        4
+  - numPreSynapses             =        0
+  - Refractory period          =  0.00000
+Group Action(1): 
+  - Type                       =    EXCIT
+  - Size                       =        1
+  - Start Id                   =        0
+  - End Id                     =        0
+  - numPostSynapses            =        0
+  - numPreSynapses             =      100
+  - STDP:
+      - E-STDP TYPE            =   DA_MOD
+      - I-STDP TYPE            =  UNKNOWN
+      - ALPHA_PLUS_EXC         =  0.00010
+      - ALPHA_MINUS_EXC        = -0.00150
+      - TAU_PLUS_INV_EXC       =  0.05000
+      - TAU_MINUS_INV_EXC      =  0.05000
+      - BETA_LTP               =  0.00000
+      - BETA_LTD               =  0.00000
+      - LAMBDA                 =  0.00000
+      - DELTA                  =  0.00000
+Group Action(2): 
+  - Type                       =    EXCIT
+  - Size                       =        1
+  - Start Id                   =        1
+  - End Id                     =        1
+  - numPostSynapses            =        0
+  - numPreSynapses             =      100
+  - STDP:
+      - E-STDP TYPE            =   DA_MOD
+      - I-STDP TYPE            =  UNKNOWN
+      - ALPHA_PLUS_EXC         =  0.00010
+      - ALPHA_MINUS_EXC        = -0.00150
+      - TAU_PLUS_INV_EXC       =  0.05000
+      - TAU_MINUS_INV_EXC      =  0.05000
+      - BETA_LTP               =  0.00000
+      - BETA_LTD               =  0.00000
+      - LAMBDA                 =  0.00000
+      - DELTA                  =  0.00000
+Group Action(3): 
+  - Type                       =    EXCIT
+  - Size                       =        1
+  - Start Id                   =        2
+  - End Id                     =        2
+  - numPostSynapses            =        0
+  - numPreSynapses             =      100
+  - STDP:
+      - E-STDP TYPE            =   DA_MOD
+      - I-STDP TYPE            =  UNKNOWN
+      - ALPHA_PLUS_EXC         =  0.00010
+      - ALPHA_MINUS_EXC        = -0.00150
+      - TAU_PLUS_INV_EXC       =  0.05000
+      - TAU_MINUS_INV_EXC      =  0.05000
+      - BETA_LTP               =  0.00000
+      - BETA_LTD               =  0.00000
+      - LAMBDA                 =  0.00000
+      - DELTA                  =  0.00000
+Group Action(4): 
+  - Type                       =    EXCIT
+  - Size                       =        1
+  - Start Id                   =        3
+  - End Id                     =        3
+  - numPostSynapses            =        0
+  - numPreSynapses             =      100
+  - STDP:
+      - E-STDP TYPE            =   DA_MOD
+      - I-STDP TYPE            =  UNKNOWN
+      - ALPHA_PLUS_EXC         =  0.00010
+      - ALPHA_MINUS_EXC        = -0.00150
+      - TAU_PLUS_INV_EXC       =  0.05000
+      - TAU_MINUS_INV_EXC      =  0.05000
+      - BETA_LTP               =  0.00000
+      - BETA_LTD               =  0.00000

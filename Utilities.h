@@ -29,11 +29,17 @@ enum MotorRotationType {
 enum obstacle_shape_t {
 	RECTANGLE, CIRCLE
 };
-#define USLEFT  = 0;
-#define USLEFT45 = 1;
-#define USFRONT = 2;
-#define USRIGHT45 = 3;
-#define USRIGHT = 4;
+#define USLEFT   0
+#define USLEFT45   1
+#define USFRONT    2
+#define USRIGHT45  3
+#define USRIGHT    4
+
+#define NORTH  0
+#define WEST 	 1
+#define EAST   2
+#define SOUTH  3
+
 
 class Point {
 public:

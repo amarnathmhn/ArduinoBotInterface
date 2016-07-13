@@ -82,12 +82,13 @@ int main() {
 		printf("Error:main(): Environment Couldn't be Created\n");
 		return -1;
 	}
-
+	Point obs0(0,0);
 	Point obs1(150, 150);
 	Point obs2(200, 300);
 	Point obs3(300, 150);
 	Point tgt1(envWidth/2 - 25, envHeight/2 - 25);
 
+	pEnv->setObstacle(obs0, 200, 50);
 	pEnv->setObstacle(obs1, 50, 200);
 	pEnv->setObstacle(obs2, 100, 50);
 	pEnv->setObstacle(obs3, 50, 200);
@@ -103,10 +104,9 @@ int main() {
 	//******************************************* CREATE BRAIN **************************************************
 
 	int nPlaceCells = 100;
-	int nActions = 3;
+	int nActions = 4;
 	Brain* pBrain = new Brain();
 	pBrain->createHippocampal(nPlaceCells, nActions);
-
 	//******************************************* CREATE AGENT **************************************************
 	Point initPos(50, envHeight - 50);
 	float initAngle = 0.0;
@@ -178,6 +178,8 @@ int main() {
 				break;
 			}
 		}
+
+		printf("************* Game Param : FPS = %f ******************\n", FPS);
 
 		if (pos_update) {
 			// Add Controller Here

@@ -160,25 +160,54 @@ void Agent::updatePosition() {
 	if (pBrain)
 		if (pBrain->neuronMap.size() != 0) {
 			pBrain->setInput(currentPosition);
-			pBrain->run(0, 100);
-
+//			//visualize rates
+//			//pEnv->visualizePlaceCellFiring(pBrain->neuronMap, pBrain->inputFiringRates);
+//			// Calculate rewards for each action before hand
+//			// to be given globally as in Florian XOR
+//
+			int actionRewarded = this->getCollisionAvoidanceAction();
+//			int actionPunished = this->getCollisionSeekingAction();
+			printf("Action To be rewarded = "); printAction(actionRewarded);
+//			printf("Action To be punished = "); printAction(actionPunished);
+			if (actionRewarded != -1)
+				pBrain->setDAReward( 100, actionRewarded);
+			else
+				pBrain->setDAReward(0, 0);
+//			// to set punishments
+////			if (actionPunished != -1)
+////					pBrain->setReward(true, -0.001, actionPunished);
+////			else
+////					pBrain->setReward(true, 0., 0);
+//			//pBrain->setReward(true, 0.5., actionRewarded); // checking ... comment this later
+//			//pBrain->setReward(true, 0.5, USNORTH);
+			printf("calling run\n");
+			pBrain->run(0, 500);
+			printf("after run\n");
+			pBrain->printActionRates();
+//
 			switch (pBrain->getAction()) {
 
-			case 0:
+			case NORTH:
 				printf("Agent::updatePosition:Brain Action %s\n",
 						withJump ? "Jump North" : "moveForward");
 				withJump ? this->jumpNorth() : this->moveForward(dt);
 				break;
-			case 1:
+			case WEST:
 				printf("Agent::updatePosition:Brain Action %s\n",
 						withJump ? "Jump West" : "moveLeft");
 				withJump ? this->jumpWest() : this->moveLeft(dt);
 				break;
-			case 2:
+			case EAST:
 				printf("Agent::updatePosition:Brain Action %s\n",
 						withJump ? "Jump East" : "moveRight");
 				withJump ? this->jumpEast() : this->moveRight(dt);
 				break;
+			case SOUTH:
+				printf("Agent::updatePositionw:Brain Action %s\n",
+						withJump ? "Jump South" : "moveBackward");
+				withJump ? this->jumpSouth() : this->moveBackward(dt);
+				break;
+
 			default:
 				printf("Agent::updatePosition:DEFAULT Action %s\n",
 						withJump ? "Jump North" : "moveForward");
@@ -187,19 +216,20 @@ void Agent::updatePosition() {
 			}
 		}
 
-
 	//this->turnRight(0.01);
 	// update Sensor values while drawing them
 	if (pEnv) {
-		for (int i = 0; i < numOfSensors; i++)
+		for (int i = 0; i < numOfSensors; i++){
 			this->US[i].calcDistance(pEnv, currentPosition, currentAngle);
+			printf("US[%d] = %f\n", i, US[i].getDistance());
+		}
 	}
 	immReward = 0.;
 
 	if (hasCollided()) {
 		this->currentPosition.copy(this->initialPosition);
 		this->currentAngle = 0.0;
-		immReward = -1.0;
+		immReward = -100.0;
 		printf("*Collided - Immediate Reward = %f *\n", immReward);
 
 	} else {
@@ -211,6 +241,8 @@ void Agent::updatePosition() {
 			printf("*Target Reached - Immediate Reward = %f *\n", immReward);
 		}
 	}
+	// now set reward
+	//pBrain->setReward(true, immReward);
 
 	printf("New Position %f, %f \n", currentPosition.x, currentPosition.y);
 	draw();
@@ -255,6 +287,35 @@ void Agent::moveLeft(float runTime) {
 void Agent::moveRight(float runTime) {
 	turnRight(runTime);
 	moveForward(runTime);
+}
+void Agent::moveBackward(float runTime) {
+	printf("Agent::moveForward Called\n");
+	this->ML.setRunTime(runTime);
+	this->ML.setRPM(200);
+	this->ML.setRotationType(BACKWARD);
+	this->ML.rotateWheel(&WL);
+
+	this->MR.setRunTime(runTime);
+	this->MR.setRPM(200);
+	this->MR.setRotationType(BACKWARD);
+	this->MR.rotateWheel(&WR);
+	// calculate wheel travel distance here
+	// noOfRotations*circumference
+	float DLW = (this->WL.getAngleRotated()) * (this->WL.getDiameter()) / 2; // left wheel distance
+	float DRW = (this->WR.getAngleRotated()) * (this->WR.getDiameter()) / 2; // right wheel distance
+
+	float dTheta = (DLW - DRW) / this->width;  // rotation about C.O.M
+
+	float dx = 0.5 * (DLW + DRW) * sin(currentAngle);
+	float dy = 0.5 * (DLW + DRW) * cos(currentAngle);
+
+	currentPosition.x += dx;
+	currentPosition.y -= dy;
+	currentAngle += dTheta;
+
+	printf(
+			"Agent::moveBackward():DLW = %f, DRW = %f, dx = %f, dy = %f, CurrentPosition = %f,%f\n",
+			DLW, DRW, dx, dy, currentPosition.x, currentPosition.y);
 }
 void Agent::turnLeft(float runTime) {
 	printf("Agent::turnLeft Called\n");
@@ -311,7 +372,7 @@ void Agent::setTrail(bool tr) {
 }
 bool Agent::hasCollided() {
 	for (int i = 0; i < this->numOfSensors; i++) {
-		if (US[i].getDistance() < 5) {
+		if (US[i].getDistance() < width) {
 			return true;
 		}
 	}
@@ -380,6 +441,9 @@ void Agent::jumpEast() {
 
 	this->currentPosition.x += this->jumpVelocity.x;
 }
+void Agent::jumpSouth() {
+	this->currentPosition.y += this->jumpVelocity.y;
+}
 
 void Agent::setJump(bool en, float Vx, float Vy) {
 	this->withJump = en;
@@ -388,4 +452,56 @@ void Agent::setJump(bool en, float Vx, float Vy) {
 		this->jumpVelocity.y = Vy;
 	}
 
+}
+int Agent::getCollisionAvoidanceAction() {
+	// Check if current position has close obstacle on left
+	if (US[USLEFT].getDistance() < width) {
+		return EAST;
+	}
+	if (US[USRIGHT].getDistance() < width) {
+		return WEST;
+	}
+	if (US[USFRONT].getDistance() < width) {
+		return SOUTH;
+	}
+	// check southwards
+	if( pEnv->isInvalid( Point(currentPosition.x, currentPosition.y + 20) ) ) {
+		return NORTH;
+	}
+	return -1; // no particular action -let it be random
+}
+
+int Agent::getCollisionSeekingAction() {
+	// Check if current position has close obstacle on left
+	if (US[USLEFT].getDistance() < width) {
+		return WEST;
+	}
+	if (US[USRIGHT].getDistance() < width) {
+		return EAST;
+	}
+	if (US[USFRONT].getDistance() < width) {
+		return NORTH;
+	}
+	return -1; // no particular action -let it be random
+}
+
+void Agent::printAction(int action) {
+
+	switch (action) {
+	case NORTH:
+		printf("NORTH\n");
+		break;
+	case WEST:
+		printf("WEST\n");
+		break;
+	case EAST:
+		printf("EAST\n");
+		break;
+	case SOUTH:
+		printf("SOUTH\n");
+		break;
+	default:
+		printf("DEFAULT\n");
+		break;
+	}
 }
